@@ -1,11 +1,9 @@
 <template>
-  <div>Store Page</div>
+  <div>Support</div>
 </template>
 
 <script>
-export default {
-  name: 'Store',
-}
+export default {}
 </script>
 
 <style scoped></style>

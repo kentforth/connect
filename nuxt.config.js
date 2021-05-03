@@ -23,13 +23,15 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
-  ],
+  buildModules: ['@nuxtjs/svg-sprite', '@nuxtjs/eslint-module'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/style-resources'],
+
+  svgSprite: {
+    input: '~/assets/svg/',
+    output: '~/assets/sprite/gen',
+  },
 
   styleResources: {
     scss: ['~/assets/scss/app.scss'],
