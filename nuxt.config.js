@@ -1,3 +1,4 @@
+import i18n from './config/i18n'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -23,10 +24,36 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: ['@nuxtjs/svg-sprite', '@nuxtjs/eslint-module'],
+  buildModules: [
+    '@nuxtjs/svg-sprite',
+    '@nuxtjs/eslint-module',
+    [
+      'nuxt-i18n',
+      {
+        vueI18nLoader: true,
+        defaultLocale: 'en',
+        strategy: 'no_prefix',
+        locales: [
+          {
+            code: 'en',
+            name: 'English',
+          },
+          {
+            code: 'de',
+            name: 'Deutsch',
+          },
+          {
+            code: 'ru',
+            name: 'Russian',
+          },
+        ],
+        vueI18n: i18n,
+      },
+    ],
+  ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/style-resources'],
+  modules: ['@nuxtjs/style-resources', 'cookie-universal-nuxt'],
 
   svgSprite: {
     input: '~/assets/svg/',

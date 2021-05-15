@@ -1,0 +1,8 @@
+{
+  "navigationLinkStore" : "store",
+  "navigationLinkLibrary" : "library",
+  "navigationLinkCommunity" : "community",
+  "navigationLinkSupport" : "support",
+  "profile" : "Profile"
+
+}
