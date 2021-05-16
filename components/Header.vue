@@ -151,7 +151,7 @@ export default {
     },
 
     showLanguageMenu() {
-      this.isLanguageMenu = true
+      this.isLanguageMenu = !this.isLanguageMenu
     },
 
     hideLanguageMenu() {
@@ -159,7 +159,7 @@ export default {
     },
 
     showUserMenu() {
-      this.isUserMenu = true
+      this.isUserMenu = !this.isUserMenu
     },
 
     hideUserMenu() {
@@ -267,17 +267,6 @@ export default {
         height: 15px;
       }
 
-      .arrow-icon {
-        width: 10px;
-        height: 10px;
-        margin-left: 10px;
-        transition: 0.2s ease-in-out;
-      }
-
-      .arrow-icon-active {
-        transform: rotateX(-180deg);
-      }
-
       .dropdown {
         position: fixed;
         top: 80px;
@@ -287,6 +276,8 @@ export default {
         display: grid;
         overflow: hidden;
         min-width: rem(150px);
+        box-shadow: 1px 3px 17px 1px rgba(11, 18, 28, 0.75);
+        z-index: 999;
 
         &__item {
           display: flex;
@@ -350,6 +341,8 @@ export default {
         display: grid;
         overflow: hidden;
         min-width: rem(150px);
+        z-index: 999;
+        box-shadow: 1px 3px 17px 1px rgba(11, 18, 28, 0.75);
 
         &__item {
           display: flex;

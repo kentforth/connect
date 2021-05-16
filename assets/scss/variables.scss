@@ -1,18 +1,22 @@
 $white: #F4F4F4;
+$white-transparent: rgba(255, 255, 255, 0.1);
 $black: #0B121C;
 $dark-gray: #182533;
+$dark-marine: rgba(32,57,86, 0.3);
 $dark-gray-lighten: #2E3B49;
 $gray: #1c2b3c;
 $blue: #2F80ED;
 $blue-bright: #659AD6;
 $success: #0FCE72;
+$text-gray: #5D738F;
 
 /*OTHER*/
 $transition: all 0.2s ease;
 $radius: 12px;
 $radius-small: 6px;
-$dark-gradient: linear-gradient(
+$dark-gradient: linear-gradient(315deg, rgba(31,48,67,1) 27%, rgba(25,39,55,1) 95%);
+$dark-gradient-transparent: linear-gradient(
     315deg,
-    rgba(31, 48, 67, 1) 27%,
-    rgba(25, 39, 55, 1) 95%
+    rgba(31, 48, 67, 0.9) 27%,
+    rgba(25, 39, 55, 0.9) 95%
 );

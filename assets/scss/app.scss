@@ -67,7 +67,34 @@ a {
   height: 30px;
 }
 
-/*ANIMATION*/
+// Scroll
+::-webkit-scrollbar {
+  width: 17px;
+}
+
+::-webkit-scrollbar-track {
+  background: $gray
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $dark-gray-lighten;
+  border-radius: 20px;
+  border: 5px solid $gray;
+}
+
+// Other
+.arrow-icon {
+  width: 10px;
+  height: 10px;
+  margin-left: 10px;
+  transition: 0.2s ease-in-out;
+}
+
+.arrow-icon-active {
+  transform: rotateX(-180deg);
+}
+
+// Animation
 .slide-enter-active {
   transition: all 0.2s ease-in;
 }

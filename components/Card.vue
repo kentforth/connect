@@ -12,11 +12,7 @@ export default {
 
 <style scoped lang="scss">
 .card::v-deep {
-  background: linear-gradient(
-    315deg,
-    rgba(31, 48, 67, 0.9) 27%,
-    rgba(25, 39, 55, 0.9) 95%
-  );
+  background: $dark-gradient-transparent;
   border-radius: $radius;
   padding: rem(20px) 0;
 

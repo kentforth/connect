@@ -38,18 +38,100 @@
           </div>
         </Card>
       </div>
+      <div class="main">
+        <div class="content__topbar">
+          <!--STORE-->
+          <div class="topbar-item" @click.stop="showStoreMenu">
+            <span>Your Store</span>
+            <svg-icon
+              name="arrow-down"
+              class="arrow-icon"
+              :class="{ 'arrow-icon-active': isYourStore }"
+            />
+            <transition name="slide">
+              <Dropdown v-if="isYourStore">
+                <li class="dropdown__item" @click.stop="hideStoreMenu">
+                  <nuxt-link :to="{ name: 'index' }">Home</nuxt-link>
+                </li>
+                <li class="dropdown__item" @click.stop="hideStoreMenu">
+                  SOmew
+                </li>
+                <li class="dropdown__item" @click.stop="hideStoreMenu">Any</li>
+              </Dropdown>
+            </transition>
+          </div>
+
+          <!--CATEGORIES-->
+          <div class="topbar-item" @click.stop="showCategoriesMenu">
+            <span>Categories</span>
+            <svg-icon
+              name="arrow-down"
+              class="arrow-icon"
+              :class="{ 'arrow-icon-active': isCategories }"
+            />
+            <transition name="slide">
+              <Dropdown v-if="isCategories">
+                <li class="dropdown__item" @click.stop="hideCategoriesMenu">
+                  <nuxt-link :to="{ name: 'index' }">Home</nuxt-link>
+                </li>
+                <li class="dropdown__item" @click.stop="hideCategoriesMenu">
+                  SOmew
+                </li>
+                <li class="dropdown__item" @click.stop="hideCategoriesMenu">
+                  Any
+                </li>
+              </Dropdown>
+            </transition>
+          </div>
+
+          <!--NEWS-->
+          <div class="topbar-item" @click.stop="showNewsMenu">
+            <span>News</span>
+            <svg-icon
+              name="arrow-down"
+              class="arrow-icon"
+              :class="{ 'arrow-icon-active': isNews }"
+            />
+            <transition name="slide">
+              <Dropdown v-if="isNews">
+                <li class="dropdown__item" @click.stop="hideNewsMenu">
+                  <nuxt-link :to="{ name: 'index' }">Home</nuxt-link>
+                </li>
+                <li class="dropdown__item" @click.stop="hideNewsMenu">SOmew</li>
+                <li class="dropdown__item" @click.stop="hideNewsMenu">Any</li>
+              </Dropdown>
+            </transition>
+          </div>
+
+          <!--NEWS-->
+          <nuxt-link :to="{ name: 'wishlist' }" class="link-wishlist">
+            <svg-icon name="star" class="icon-star" />
+            <span>Wishlist</span>
+          </nuxt-link>
+
+          <!--SEARCH-->
+          <div class="search">
+            <input type="text" placeholder="search for a game" />
+            <svg-icon name="search" class="icon-search" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Dropdown from '@/components/Dropdown'
 import Card from '../components/Card'
 
 export default {
-  components: { Card },
+  components: { Dropdown, Card },
   data() {
     return {
+      isYourStore: false,
+      isCategories: false,
+      isNews: false,
       backgroundImage:
         'https://images.gog-statics.com/35cd661ed60c46beb5a99a744f6e70ab12c0b4055a92028ef0b2460ff09e6962.jpg',
       categoriesEN: [
@@ -288,12 +370,44 @@ export default {
     },
   },
   mounted() {
+    document.body.addEventListener('click', this.hideStoreMenu)
+    document.body.addEventListener('click', this.hideCategoriesMenu)
+    document.body.addEventListener('click', this.hideNewsMenu)
     const locale = localStorage.getItem('locale')
     this.$i18n.locale = locale
     this.SET_LANGUAGE(locale)
   },
+  beforeDestroy() {
+    document.body.removeEventListener('click', this.hideStoreMenu)
+    document.body.removeEventListener('click', this.this.hideCategoriesMenu)
+    document.body.removeEventListener('click', this.this.hideNewsMenu)
+  },
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
+
+    showStoreMenu() {
+      this.isYourStore = !this.isYourStore
+    },
+
+    showCategoriesMenu() {
+      this.isCategories = !this.isCategories
+    },
+
+    showNewsMenu() {
+      this.isNews = !this.isNews
+    },
+
+    hideStoreMenu() {
+      this.isYourStore = false
+    },
+
+    hideCategoriesMenu() {
+      this.isCategories = false
+    },
+
+    hideNewsMenu() {
+      this.isNews = false
+    },
   },
 }
 </script>
@@ -301,13 +415,16 @@ export default {
 <style scoped lang="scss">
 .main {
   &__background {
-    width: 100%;
-    height: 100vh;
+    min-width: 100%;
+    min-height: 110vh;
     position: fixed;
+    top: 0;
+    left: 0;
     background-color: #202a34;
     background-blend-mode: luminosity;
     mix-blend-mode: screen;
     background-size: cover;
+    background-repeat: no-repeat;
     z-index: -1;
   }
 
@@ -324,11 +441,92 @@ export default {
 
 .content {
   padding: rem(40px);
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-gap: rem(30px);
 
   .sidebar {
     max-width: 300px;
     display: grid;
     grid-gap: rem(40px);
+  }
+
+  &__topbar {
+    width: 100%;
+    background: $dark-gradient-transparent;
+    height: max-content;
+    border-radius: $radius;
+    padding-left: rem(20px);
+    display: grid;
+    grid-gap: rem(40px);
+    grid-template-columns: repeat(4, max-content) 1fr;
+
+    .topbar-item {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: rem(18px);
+      display: flex;
+      align-items: center;
+      padding: rem(10px) 0;
+      position: relative;
+
+      .arrow-icon {
+        width: 13px;
+        margin-left: rem(10px);
+      }
+
+      .dropdown {
+        position: absolute;
+        top: rem(50px);
+        right: rem(-30px);
+      }
+    }
+
+    .link-wishlist {
+      display: flex;
+      align-items: center;
+      border-left: 1px solid $white-transparent;
+      padding-left: rem(30px);
+
+      span {
+        color: $blue;
+      }
+
+      .icon-star {
+        width: 15px;
+        margin-right: rem(15px);
+      }
+    }
+
+    .search {
+      position: relative;
+      input {
+        width: 100%;
+        margin-right: rem(20px);
+        height: 100%;
+        font-size: rem(16px);
+        font-family: 'NimbusSans', sans-serif;
+        padding: rem(5px) rem(50px) rem(5px) rem(15px);
+        background-color: $dark-marine;
+        border: none;
+        outline: none;
+        color: $white;
+        font-weight: 300;
+      }
+
+      input::placeholder {
+        color: $text-gray;
+      }
+
+      .icon-search {
+        position: absolute;
+        top: 7px;
+        right: 10px;
+        width: rem(20px);
+      }
+    }
   }
 }
 </style>
