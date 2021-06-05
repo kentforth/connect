@@ -22,8 +22,8 @@ export default {
 
   .line {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    height: 2px;
+    background-color: $line-thin;
+    height: 1px;
     margin-top: rem(10px);
   }
 

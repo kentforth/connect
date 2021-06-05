@@ -28,18 +28,45 @@
 
     <div class="recommended__info">
       <h4>Recommended</h4>
+
+      <!--TITLE-->
       <div class="recommended__info__title">
         <h2>{{ currentGame.title }}</h2>
-        <ButtonIcon v-if="hasInWishList" @click.native="toggleInWishlist">
+        <ButtonIcon
+          v-if="currentGame.isInWishList"
+          @click.native="toggleInWishlist"
+        >
           <svg-icon name="star" class="icon" />
         </ButtonIcon>
         <ButtonIcon v-else @click.native="toggleInWishlist">
           <svg-icon name="star-outline" class="icon" />
         </ButtonIcon>
       </div>
+
+      <!--IMAGES-->
       <div class="recommended__info__images">
         <div v-for="image in previewImages" :key="image.id">
           <img :src="image.imageUrl" alt="image" @click="goToGamePage" />
+        </div>
+      </div>
+
+      <!--AVAILABLE-->
+      <div class="recommended__info__available">
+        <div class="recommended__info__available__platforms">
+          <p>Now Available</p>
+          <div class="recommended__info__available__platforms__images">
+            <svg-icon name="windows" />
+            <svg-icon name="macos" />
+            <svg-icon name="steam" />
+          </div>
+        </div>
+        <div class="recommended__info__available__tags">
+          <nuxt-link
+            v-for="tag in currentGame.tags"
+            :key="tag"
+            :to="{ name: 'tag-tag', params: { tag: tagToLowerCase(tag) } }"
+            >{{ tag }}</nuxt-link
+          >
         </div>
       </div>
     </div>
@@ -53,7 +80,6 @@ export default {
   components: { ButtonIcon },
   data() {
     return {
-      hasInWishList: false,
       games: [
         {
           id: 67,
@@ -78,7 +104,18 @@ export default {
       ],
       currentGame: {
         title: 'Europa Universalis IV',
-        urlTitle: '',
+        urlTitle: 'Europa Universalis IV',
+        isInWishList: false,
+        documentId: 'OjJW4vyjDZwmTttRuQgo',
+        tags: [
+          'Economy',
+          'Simulation',
+          'Historical',
+          'Strategy',
+          'Multiplayer',
+          'Education',
+          'Military',
+        ],
       },
       previewImages: [
         {
@@ -102,7 +139,6 @@ export default {
             'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen4.webp?alt=media&token=9b14234b-1b6b-4187-89e6-be6be6631b95',
         },
       ],
-
       swiperOptions: {
         stopOnLastSlide: false,
         loop: true,
@@ -162,10 +198,12 @@ export default {
           .get()
           .then((snapshot) => {
             snapshot.forEach((document) => {
+              this.currentGame.documentId = document.id
               this.previewImages[0].imageUrl = document.data().imageURL_1
               this.previewImages[1].imageUrl = document.data().imageURL_2
               this.previewImages[2].imageUrl = document.data().imageURL_3
               this.previewImages[3].imageUrl = document.data().imageURL_4
+              this.currentGame.isInWishList = document.data().is_in_wishlist
               this.currentGame.title = document.data().title
               this.currentGame.urlTitle = document.data().title
             })
@@ -175,10 +213,20 @@ export default {
       }
     },
 
+    /**
+     * set game title url
+     */
     setGameUrl(title) {
       const newTitle = title.replace(/\s+/g, '-').toLowerCase()
       console.log(newTitle)
       return newTitle
+    },
+
+    /**
+     * make tag to lower case
+     */
+    tagToLowerCase(tag) {
+      return tag.toLowerCase()
     },
 
     /**
@@ -193,10 +241,29 @@ export default {
     },
 
     /**
-     * toggle game in wishlist
+     * toggle gamne in wish list
+     * @returns {Promise<void>}
      */
-    toggleInWishlist() {
-      this.hasInWishList = !this.hasInWishList
+    async toggleInWishlist() {
+      let isInWishList = false
+      if (this.currentGame.isInWishList) {
+        this.currentGame.isInWishList = false
+        isInWishList = false
+      } else {
+        this.currentGame.isInWishList = true
+        isInWishList = true
+      }
+
+      try {
+        await this.$fire.firestore
+          .collection('games')
+          .doc(this.currentGame.documentId)
+          .update({
+            is_in_wishlist: isInWishList,
+          })
+      } catch (e) {
+        throw new Error(e)
+      }
     },
   },
 }
@@ -296,6 +363,38 @@ export default {
         width: 100%;
         object-fit: cover;
         object-position: center;
+      }
+    }
+
+    &__available {
+      &__platforms {
+        color: $white;
+        &__images {
+          max-width: rem(100px);
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: rem(20px);
+
+          svg {
+            width: 25px;
+          }
+        }
+      }
+
+      &__tags {
+        margin-top: rem(20px);
+        display: flex;
+        padding-bottom: rem(20px);
+        border-bottom: 1px solid $line-thin;
+
+        a {
+          margin-right: rem(10px);
+          color: $white;
+          font-size: rem(13px);
+          padding: 3px 10px;
+          background-color: $gray-mid;
+          border-radius: 10px;
+        }
       }
     }
   }

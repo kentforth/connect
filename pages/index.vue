@@ -388,8 +388,8 @@ export default {
   },
   beforeDestroy() {
     document.body.removeEventListener('click', this.hideStoreMenu)
-    document.body.removeEventListener('click', this.this.hideCategoriesMenu)
-    document.body.removeEventListener('click', this.this.hideNewsMenu)
+    document.body.removeEventListener('click', this.hideCategoriesMenu)
+    document.body.removeEventListener('click', this.hideNewsMenu)
   },
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
