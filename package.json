@@ -12,13 +12,17 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nuxtjs/firebase": "^7.5.0",
     "@nuxtjs/svg-sprite": "^0.5.2",
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.9.1",
+    "firebase": "^8.6.2",
     "nuxt": "^2.15.3",
     "nuxt-i18n": "^6.27.0",
     "sass": "^1.32.12",
-    "sass-loader": "^10"
+    "sass-loader": "^10",
+    "swiper": "5.x",
+    "vue-awesome-swiper": "^4.1.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^6.0.0",

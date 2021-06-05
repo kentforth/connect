@@ -15,10 +15,15 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/assets/scss/app.scss'],
+  css: ['~/assets/scss/app.scss', 'swiper/css/swiper.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    {
+      src: '@/plugins/swiper.js',
+      ssr: false,
+    },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -53,7 +58,26 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/style-resources', 'cookie-universal-nuxt'],
+  modules: [
+    '@nuxtjs/style-resources',
+    'cookie-universal-nuxt',
+    '@nuxtjs/firebase',
+  ],
+
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyAMVQ_Y3dNO4zb0-ddTFRYPWxfILMhD9iA',
+      authDomain: 'connect-651e9.firebaseapp.com',
+      projectId: 'connect-651e9',
+      storageBucket: 'connect-651e9.appspot.com',
+      messagingSenderId: '192049796776',
+      appId: '1:192049796776:web:06c9bdf7cebd87e029149d',
+    },
+    services: {
+      storage: true,
+      firestore: true,
+    },
+  },
 
   svgSprite: {
     input: '~/assets/svg/',

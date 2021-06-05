@@ -4,6 +4,7 @@
       class="main__background"
       :style="{ backgroundImage: 'url(' + backgroundImage + ')' }"
     ></div>
+
     <div class="content">
       <!--SIDEBAR-->
       <div class="sidebar">
@@ -115,6 +116,8 @@
             <svg-icon name="search" class="icon-search" />
           </div>
         </div>
+
+        <Recommended @change-slide="changeSlide" />
       </div>
     </div>
   </div>
@@ -123,223 +126,228 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Dropdown from '@/components/Dropdown'
+import Recommended from '@/components/Recommended'
 import Card from '../components/Card'
 
 export default {
-  components: { Dropdown, Card },
-  data() {
+  components: { Recommended, Dropdown, Card },
+  data: () => ({
+    isYourStore: false,
+    isCategories: false,
+    isNews: false,
+    currentDropdown: 'store',
+    backgroundImage: '',
+    categoriesEN: [
+      {
+        icon: 'graph',
+        title: 'Top Sellers',
+        linkName: 'index',
+      },
+      {
+        icon: 'percent',
+        title: 'Specials',
+        linkName: 'index',
+      },
+      {
+        icon: 'clock',
+        title: 'Upcoming',
+        linkName: 'index',
+      },
+      {
+        icon: 'plus',
+        title: 'New Releases',
+        linkName: 'index',
+      },
+    ],
+    categoriesDE: [
+      {
+        icon: 'graph',
+        title: 'Topseller',
+        linkName: 'index',
+      },
+      {
+        icon: 'percent',
+        title: 'Angebote',
+        linkName: 'index',
+      },
+      {
+        icon: 'clock',
+        title: 'Bald verfügbar',
+        linkName: 'index',
+      },
+      {
+        icon: 'plus',
+        title: 'Neuerscheinungen',
+        linkName: 'index',
+      },
+    ],
+    categoriesRU: [
+      {
+        icon: 'graph',
+        title: 'Лидеры продаж',
+        linkName: 'index',
+      },
+      {
+        icon: 'percent',
+        title: 'Скидки',
+        linkName: 'index',
+      },
+      {
+        icon: 'clock',
+        title: 'Скоро выйдут',
+        linkName: 'index',
+      },
+      {
+        icon: 'plus',
+        title: 'Новинки',
+        linkName: 'index',
+      },
+    ],
+    genresEN: [
+      {
+        title: 'Free to Play',
+        linkPath: 'free-to-play',
+      },
+      {
+        title: 'Action',
+        linkPath: 'action',
+      },
+      {
+        title: 'Adventure',
+        linkPath: 'adventure',
+      },
+      {
+        title: 'Casual',
+        linkPath: 'casual',
+      },
+      {
+        title: 'Indie',
+        linkPath: 'indie',
+      },
+      {
+        title: 'Sports',
+        linkPath: 'sports',
+      },
+      {
+        title: 'RPG',
+        linkPath: 'rpg',
+      },
+      {
+        title: 'Strategy',
+        linkPath: 'strategy',
+      },
+      {
+        title: 'Shooter',
+        linkPath: 'shooter',
+      },
+      {
+        title: 'Racing',
+        linkPath: 'racing',
+      },
+      {
+        title: 'Simulation',
+        linkPath: 'simulation',
+      },
+    ],
+    genresDE: [
+      {
+        title: 'Kostenlos',
+        linkPath: 'free-to-play',
+      },
+      {
+        title: 'Action',
+        linkPath: 'action',
+      },
+      {
+        title: 'Abenteuer',
+        linkPath: 'adventure',
+      },
+      {
+        title: 'Gelegenheitsspiele',
+        linkPath: 'casual',
+      },
+      {
+        title: 'Indie',
+        linkPath: 'indie',
+      },
+      {
+        title: 'Sport',
+        linkPath: 'sports',
+      },
+      {
+        title: 'RPG',
+        linkPath: 'rpg',
+      },
+      {
+        title: 'Strategie',
+        linkPath: 'strategy',
+      },
+      {
+        title: 'Shooter',
+        linkPath: 'shooter',
+      },
+      {
+        title: 'Racing',
+        linkPath: 'racing',
+      },
+      {
+        title: 'Simulation',
+        linkPath: 'simulation',
+      },
+    ],
+    genresRU: [
+      {
+        title: 'Бесплатно',
+        linkPath: 'free-to-play',
+      },
+      {
+        title: 'Экшен',
+        linkPath: 'action',
+      },
+      {
+        title: 'Приключение',
+        linkPath: 'adventure',
+      },
+      {
+        title: 'Казуальная игра',
+        linkPath: 'casual',
+      },
+      {
+        title: 'Инди',
+        linkPath: 'indie',
+      },
+      {
+        title: 'Спорт',
+        linkPath: 'sports',
+      },
+      {
+        title: 'РПГ',
+        linkPath: 'rpg',
+      },
+      {
+        title: 'Стратегия',
+        linkPath: 'strategy',
+      },
+      {
+        title: 'Шутер',
+        linkPath: 'shooter',
+      },
+      {
+        title: 'Гонки',
+        linkPath: 'racing',
+      },
+      {
+        title: 'Симулятор',
+        linkPath: 'simulation',
+      },
+    ],
+  }),
+  head() {
     return {
-      isYourStore: false,
-      isCategories: false,
-      isNews: false,
-      backgroundImage:
-        'https://images.gog-statics.com/35cd661ed60c46beb5a99a744f6e70ab12c0b4055a92028ef0b2460ff09e6962.jpg',
-      categoriesEN: [
-        {
-          icon: 'graph',
-          title: 'Top Sellers',
-          linkName: 'index',
-        },
-        {
-          icon: 'percent',
-          title: 'Specials',
-          linkName: 'index',
-        },
-        {
-          icon: 'clock',
-          title: 'Upcoming',
-          linkName: 'index',
-        },
-        {
-          icon: 'plus',
-          title: 'New Releases',
-          linkName: 'index',
-        },
-      ],
-      categoriesDE: [
-        {
-          icon: 'graph',
-          title: 'Topseller',
-          linkName: 'index',
-        },
-        {
-          icon: 'percent',
-          title: 'Angebote',
-          linkName: 'index',
-        },
-        {
-          icon: 'clock',
-          title: 'Bald verfügbar',
-          linkName: 'index',
-        },
-        {
-          icon: 'plus',
-          title: 'Neuerscheinungen',
-          linkName: 'index',
-        },
-      ],
-      categoriesRU: [
-        {
-          icon: 'graph',
-          title: 'Лидеры продаж',
-          linkName: 'index',
-        },
-        {
-          icon: 'percent',
-          title: 'Скидки',
-          linkName: 'index',
-        },
-        {
-          icon: 'clock',
-          title: 'Скоро выйдут',
-          linkName: 'index',
-        },
-        {
-          icon: 'plus',
-          title: 'Новинки',
-          linkName: 'index',
-        },
-      ],
-      genresEN: [
-        {
-          title: 'Free to Play',
-          linkPath: 'free-to-play',
-        },
-        {
-          title: 'Action',
-          linkPath: 'action',
-        },
-        {
-          title: 'Adventure',
-          linkPath: 'adventure',
-        },
-        {
-          title: 'Casual',
-          linkPath: 'casual',
-        },
-        {
-          title: 'Indie',
-          linkPath: 'indie',
-        },
-        {
-          title: 'Sports',
-          linkPath: 'sports',
-        },
-        {
-          title: 'RPG',
-          linkPath: 'rpg',
-        },
-        {
-          title: 'Strategy',
-          linkPath: 'strategy',
-        },
-        {
-          title: 'Shooter',
-          linkPath: 'shooter',
-        },
-        {
-          title: 'Racing',
-          linkPath: 'racing',
-        },
-        {
-          title: 'Simulation',
-          linkPath: 'simulation',
-        },
-      ],
-      genresDE: [
-        {
-          title: 'Kostenlos',
-          linkPath: 'free-to-play',
-        },
-        {
-          title: 'Action',
-          linkPath: 'action',
-        },
-        {
-          title: 'Abenteuer',
-          linkPath: 'adventure',
-        },
-        {
-          title: 'Gelegenheitsspiele',
-          linkPath: 'casual',
-        },
-        {
-          title: 'Indie',
-          linkPath: 'indie',
-        },
-        {
-          title: 'Sport',
-          linkPath: 'sports',
-        },
-        {
-          title: 'RPG',
-          linkPath: 'rpg',
-        },
-        {
-          title: 'Strategie',
-          linkPath: 'strategy',
-        },
-        {
-          title: 'Shooter',
-          linkPath: 'shooter',
-        },
-        {
-          title: 'Racing',
-          linkPath: 'racing',
-        },
-        {
-          title: 'Simulation',
-          linkPath: 'simulation',
-        },
-      ],
-      genresRU: [
-        {
-          title: 'Бесплатно',
-          linkPath: 'free-to-play',
-        },
-        {
-          title: 'Экшен',
-          linkPath: 'action',
-        },
-        {
-          title: 'Приключение',
-          linkPath: 'adventure',
-        },
-        {
-          title: 'Казуальная игра',
-          linkPath: 'casual',
-        },
-        {
-          title: 'Инди',
-          linkPath: 'indie',
-        },
-        {
-          title: 'Спорт',
-          linkPath: 'sports',
-        },
-        {
-          title: 'РПГ',
-          linkPath: 'rpg',
-        },
-        {
-          title: 'Стратегия',
-          linkPath: 'strategy',
-        },
-        {
-          title: 'Шутер',
-          linkPath: 'shooter',
-        },
-        {
-          title: 'Гонки',
-          linkPath: 'racing',
-        },
-        {
-          title: 'Симулятор',
-          linkPath: 'simulation',
-        },
-      ],
+      title: 'Store',
     }
   },
+
   computed: {
     ...mapState('global', ['language']),
 
@@ -370,6 +378,7 @@ export default {
     },
   },
   mounted() {
+    this.getBackgroundImage(5)
     document.body.addEventListener('click', this.hideStoreMenu)
     document.body.addEventListener('click', this.hideCategoriesMenu)
     document.body.addEventListener('click', this.hideNewsMenu)
@@ -387,14 +396,23 @@ export default {
 
     showStoreMenu() {
       this.isYourStore = !this.isYourStore
+      this.currentDropdown = 'store'
+      this.isCategories = false
+      this.isNews = false
     },
 
     showCategoriesMenu() {
       this.isCategories = !this.isCategories
+      this.currentDropdown = 'categories'
+      this.isYourStore = false
+      this.isNews = false
     },
 
     showNewsMenu() {
       this.isNews = !this.isNews
+      this.currentDropdown = 'news'
+      this.isYourStore = false
+      this.isCategories = false
     },
 
     hideStoreMenu() {
@@ -407,6 +425,26 @@ export default {
 
     hideNewsMenu() {
       this.isNews = false
+    },
+
+    changeSlide(value) {
+      this.getBackgroundImage(value)
+    },
+
+    async getBackgroundImage(value) {
+      try {
+        await this.$fire.firestore
+          .collection('games')
+          .where('id', '==', value)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((document) => {
+              this.backgroundImage = document.data().backgroundImageURL
+            })
+          })
+      } catch (e) {
+        throw new Error(e)
+      }
     },
   },
 }
@@ -426,6 +464,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     z-index: -1;
+    transition: all 0.7s ease-in-out;
   }
 
   &__background:before {
@@ -436,6 +475,7 @@ export default {
     position: absolute;
     width: 100%;
     z-index: -1;
+    transition: all 0.7s ease-in-out;
   }
 }
 
@@ -443,7 +483,7 @@ export default {
   padding: rem(40px);
   display: grid;
   grid-template-columns: 250px 1fr;
-  grid-gap: rem(30px);
+  grid-gap: rem(45px);
 
   .sidebar {
     max-width: 300px;
