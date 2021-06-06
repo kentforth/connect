@@ -131,6 +131,7 @@ export default {
      */
     getLanguage() {
       const locale = localStorage.getItem('locale')
+
       switch (locale) {
         case 'en':
           this.currentLanguage.title = 'English'

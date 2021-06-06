@@ -17,9 +17,9 @@
         <button class="btn-transparent swiper-nav-prev">
           <svg-icon name="arrow-down" class="arrow-left" />
         </button>
-        <span>3 </span>
+        <span>{{ currentGame.slide }} </span>
         <span>of </span>
-        <span>7</span>
+        <span>{{ games.length }}</span>
         <button class="btn-transparent swiper-nav-next">
           <svg-icon name="arrow-down" class="arrow-right" />
         </button>
@@ -55,9 +55,21 @@
         <div class="recommended__info__available__platforms">
           <p>Now Available</p>
           <div class="recommended__info__available__platforms__images">
-            <svg-icon name="windows" />
-            <svg-icon name="macos" />
-            <svg-icon name="steam" />
+            <img
+              v-if="currentGame.platforms.includes('windows')"
+              src="../assets/svg/windows.svg"
+              alt="windows"
+            />
+            <img
+              v-if="currentGame.platforms.includes('macos')"
+              src="../assets/svg/macos.svg"
+              alt="macos"
+            />
+            <img
+              v-if="currentGame.platforms.includes('steam')"
+              src="../assets/svg/steam.svg"
+              alt="steam"
+            />
           </div>
         </div>
         <div class="recommended__info__available__tags">
@@ -69,99 +81,161 @@
           >
         </div>
       </div>
+
+      <!--PRICE-->
+      <div class="recommended__info__price">
+        <div class="recommended__info__price__price">
+          <span v-if="currentGame.discount > 0"
+            >{{ price }} {{ currency }}</span
+          >
+          <br />
+          <span v-if="currentGame.discount > 0"
+            >{{ currentGame.discount }}%</span
+          >
+          <span :class="{ 'span-price': currentGame.discount < 1 }"
+            >{{ totalPrice }} {{ currency }}</span
+          >
+        </div>
+        <div class="recommended__info__price__button">
+          <RoundedButton :background-color="'#2F80ED'">
+            <span>Add to Cart</span>
+            <svg-icon name="cart" />
+          </RoundedButton>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import ButtonIcon from '@/components/ButtonIcon'
+import RoundedButton from '@/components/RoundedButton'
 export default {
   name: 'Recommended',
-  components: { ButtonIcon },
-  data() {
-    return {
-      games: [
-        {
-          id: 67,
-          title: 'europa',
-          image: require('../assets/images/recommended/europa-banner.webp'),
-        },
-        {
-          id: 68,
-          title: 'red',
-          image: require('../assets/images/recommended/red-banner.webp'),
-        },
-        {
-          id: 69,
-          title: 'village',
-          image: require('../assets/images/recommended/village-banner.webp'),
-        },
-        {
-          id: 70,
-          title: 'little',
-          image: require('../assets/images/recommended/little-banner.webp'),
-        },
-      ],
-      currentGame: {
-        title: 'Europa Universalis IV',
-        urlTitle: 'Europa Universalis IV',
-        isInWishList: false,
-        documentId: 'OjJW4vyjDZwmTttRuQgo',
-        tags: [
-          'Economy',
-          'Simulation',
-          'Historical',
-          'Strategy',
-          'Multiplayer',
-          'Education',
-          'Military',
-        ],
+  components: { RoundedButton, ButtonIcon },
+  data: () => ({
+    games: [
+      {
+        id: 1,
+        title: 'europa',
+        image: require('../assets/images/recommended/europa-banner.webp'),
       },
-      previewImages: [
-        {
-          bannerId: 1,
-          imageUrl:
-            'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen1.webp?alt=media&token=e838d2d5-81df-4a3c-bfe2-de5203902f09',
-        },
-        {
-          bannerId: 2,
-          imageUrl:
-            'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen2.webp?alt=media&token=20675081-d6d9-4baf-9603-9c1dd5027184',
-        },
-        {
-          bannerId: 3,
-          imageUrl:
-            'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen3.webp?alt=media&token=b0b2a5e8-60b7-4dae-a984-76db293e26af',
-        },
-        {
-          bannerId: 4,
-          imageUrl:
-            'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen4.webp?alt=media&token=9b14234b-1b6b-4187-89e6-be6be6631b95',
-        },
-      ],
-      swiperOptions: {
-        stopOnLastSlide: false,
-        loop: true,
-        slidesPerView: 1,
-        effect: 'fade',
-        speed: 1000,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: true,
-        },
-        navigation: {
-          nextEl: '.swiper-nav-next',
-          prevEl: '.swiper-nav-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
+      {
+        id: 2,
+        title: 'red',
+        image: require('../assets/images/recommended/red-banner.webp'),
       },
-    }
-  },
+      {
+        id: 3,
+        title: 'village',
+        image: require('../assets/images/recommended/village-banner.webp'),
+      },
+      {
+        id: 4,
+        title: 'little',
+        image: require('../assets/images/recommended/little-banner.webp'),
+      },
+    ],
+    currentGame: {
+      slide: 1,
+      title: 'Europa Universalis IV',
+      urlTitle: 'Europa Universalis IV',
+      isInWishList: false,
+      documentId: 'OjJW4vyjDZwmTttRuQgo',
+      price: 21,
+      discount: 10,
+      tags: [
+        'Economy',
+        'Simulation',
+        'Historical',
+        'Strategy',
+        'Multiplayer',
+        'Education',
+        'Military',
+      ],
+      platforms: ['windows', 'macos', 'steam'],
+    },
+    previewImages: [
+      {
+        bannerId: 1,
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen1.webp?alt=media&token=e838d2d5-81df-4a3c-bfe2-de5203902f09',
+      },
+      {
+        bannerId: 2,
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen2.webp?alt=media&token=20675081-d6d9-4baf-9603-9c1dd5027184',
+      },
+      {
+        bannerId: 3,
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen3.webp?alt=media&token=b0b2a5e8-60b7-4dae-a984-76db293e26af',
+      },
+      {
+        bannerId: 4,
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/connect-651e9.appspot.com/o/games%2Feuropa%2Fscreen4.webp?alt=media&token=9b14234b-1b6b-4187-89e6-be6be6631b95',
+      },
+    ],
+    swiperOptions: {
+      stopOnLastSlide: false,
+      loop: true,
+      slidesPerView: 1,
+      effect: 'fade',
+      speed: 1000,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.swiper-nav-next',
+        prevEl: '.swiper-nav-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    },
+  }),
 
-  computed: {},
+  computed: {
+    price() {
+      let price = this.currentGame.price
+
+      if (this.$i18n.locale === 'ru') {
+        price = price * 72.86
+      } else if (this.$i18n.locale === 'de') {
+        price = price * 0.82
+      }
+      return price.toFixed(0).replace(/\.0+$/, '')
+    },
+
+    currency() {
+      const locale = this.$i18n.locale
+      switch (locale) {
+        case 'ru':
+          return 'руб.'
+        case 'de':
+          return '€'
+        case 'en':
+          return '$'
+        default:
+          return '$'
+      }
+    },
+
+    totalPrice() {
+      const discount = this.currentGame.discount / 100
+      let totalPrice =
+        this.currentGame.price - this.currentGame.price * discount
+      if (this.$i18n.locale === 'ru') {
+        totalPrice = totalPrice * 72.86
+      } else if (this.$i18n.locale === 'de') {
+        totalPrice = totalPrice * 0.82
+      }
+      return totalPrice.toFixed(0).replace(/\.0+$/, '')
+    },
+  },
 
   mounted() {},
   methods: {
@@ -178,6 +252,10 @@ export default {
       this.getPreviewImages(gameId)
     },
 
+    getPlatform(platform) {
+      return this.currentGame.platforms.includes(platform)
+    },
+
     /**
      * get preview images from firebase
      * @param id
@@ -185,6 +263,16 @@ export default {
      */
     async getPreviewImages(id) {
       let gameId = id
+      let slideId = id
+
+      if (slideId === 5) {
+        slideId = 1
+      }
+
+      if (slideId === 0) {
+        slideId = 4
+      }
+
       if (gameId === 1) {
         gameId = 5
       } else if (gameId === 0) {
@@ -198,14 +286,7 @@ export default {
           .get()
           .then((snapshot) => {
             snapshot.forEach((document) => {
-              this.currentGame.documentId = document.id
-              this.previewImages[0].imageUrl = document.data().imageURL_1
-              this.previewImages[1].imageUrl = document.data().imageURL_2
-              this.previewImages[2].imageUrl = document.data().imageURL_3
-              this.previewImages[3].imageUrl = document.data().imageURL_4
-              this.currentGame.isInWishList = document.data().is_in_wishlist
-              this.currentGame.title = document.data().title
-              this.currentGame.urlTitle = document.data().title
+              this.assignValuesFromFirebase(slideId, document)
             })
           })
       } catch (e) {
@@ -213,12 +294,27 @@ export default {
       }
     },
 
+    assignValuesFromFirebase(slideId, document) {
+      this.currentGame.documentId = document.id
+      this.previewImages[0].imageUrl = document.data().imageURL_1
+      this.previewImages[1].imageUrl = document.data().imageURL_2
+      this.previewImages[2].imageUrl = document.data().imageURL_3
+      this.previewImages[3].imageUrl = document.data().imageURL_4
+      this.currentGame.isInWishList = document.data().is_in_wishlist
+      this.currentGame.title = document.data().title
+      this.currentGame.urlTitle = document.data().title
+      this.currentGame.slide = slideId
+      this.currentGame.platforms = document.data().platforms
+      this.currentGame.tags = document.data().tags
+      this.currentGame.price = document.data().price
+      this.currentGame.discount = document.data().discount
+    },
+
     /**
      * set game title url
      */
     setGameUrl(title) {
       const newTitle = title.replace(/\s+/g, '-').toLowerCase()
-      console.log(newTitle)
       return newTitle
     },
 
@@ -276,6 +372,8 @@ export default {
   display: grid;
   grid-template-columns: 800px 1fr;
   grid-gap: rem(30px);
+  overflow: hidden;
+  border-radius: $radius;
 
   &__slider {
     height: 500px;
@@ -331,7 +429,7 @@ export default {
   }
 
   &__info {
-    padding: rem(30px) rem(30px) rem(30px) 0;
+    padding: rem(30px) rem(30px) 0 0;
 
     h4 {
       font-weight: 500;
@@ -375,7 +473,7 @@ export default {
           grid-template-columns: repeat(3, 1fr);
           grid-gap: rem(20px);
 
-          svg {
+          img {
             width: 25px;
           }
         }
@@ -395,6 +493,58 @@ export default {
           background-color: $gray-mid;
           border-radius: 10px;
         }
+      }
+    }
+
+    &__price {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: rem(15px);
+      margin-top: rem(30px);
+      align-items: center;
+
+      &__price {
+        justify-self: end;
+        display: grid;
+        grid-template-columns: 1fr max-content;
+        justify-items: end;
+        grid-column-gap: 10px;
+        align-items: center;
+
+        span {
+          font-size: rem(30px);
+        }
+
+        span:nth-child(1) {
+          font-size: rem(20px);
+          grid-column: 2;
+          justify-self: end;
+          text-decoration: line-through;
+        }
+
+        span:nth-child(3) {
+          color: $success;
+          font-size: rem(20px);
+          grid-column: 1;
+          grid-row: 2;
+        }
+
+        span:nth-child(4) {
+          grid-column: 2;
+          grid-row: 2;
+        }
+
+        .span-price {
+          color: $white !important;
+          font-size: rem(30px) !important;
+          grid-column: 2 !important;
+        }
+      }
+
+      &__button {
+        display: flex;
+        width: 100%;
+        justify-content: center;
       }
     }
   }

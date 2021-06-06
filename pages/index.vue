@@ -394,6 +394,9 @@ export default {
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
 
+    /**
+     * show store menu
+     */
     showStoreMenu() {
       this.isYourStore = !this.isYourStore
       this.currentDropdown = 'store'
@@ -401,6 +404,9 @@ export default {
       this.isNews = false
     },
 
+    /**
+     * show categories menu
+     */
     showCategoriesMenu() {
       this.isCategories = !this.isCategories
       this.currentDropdown = 'categories'
@@ -408,6 +414,9 @@ export default {
       this.isNews = false
     },
 
+    /**
+     * show news menu
+     */
     showNewsMenu() {
       this.isNews = !this.isNews
       this.currentDropdown = 'news'
@@ -431,6 +440,11 @@ export default {
       this.getBackgroundImage(value)
     },
 
+    /**
+     * get backgorund image
+     * @param value
+     * @returns {Promise<void>}
+     */
     async getBackgroundImage(value) {
       try {
         await this.$fire.firestore
@@ -499,6 +513,7 @@ export default {
     padding-left: rem(20px);
     display: grid;
     grid-gap: rem(40px);
+    overflow: hidden;
     grid-template-columns: repeat(4, max-content) 1fr;
 
     .topbar-item {
