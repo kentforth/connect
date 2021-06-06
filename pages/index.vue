@@ -377,6 +377,9 @@ export default {
       }
     },
   },
+  created() {
+    this.GET_USER()
+  },
   mounted() {
     this.getBackgroundImage(5)
     document.body.addEventListener('click', this.hideStoreMenu)
@@ -393,6 +396,7 @@ export default {
   },
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
+    ...mapActions('user', ['GET_USER']),
 
     /**
      * show store menu

@@ -8,7 +8,11 @@
         @slideChange="changeSlide"
       >
         <div class="swiper-wrapper">
-          <div v-for="game in games" :key="game.image" class="swiper-slide">
+          <div
+            v-for="game in recommendedGames"
+            :key="game.image"
+            class="swiper-slide"
+          >
             <img :src="game.image" alt="" />
           </div>
         </div>
@@ -19,7 +23,7 @@
         </button>
         <span>{{ currentGame.slide }} </span>
         <span>of </span>
-        <span>{{ games.length }}</span>
+        <span>{{ recommendedGames.length }}</span>
         <button class="btn-transparent swiper-nav-next">
           <svg-icon name="arrow-down" class="arrow-right" />
         </button>
@@ -97,7 +101,10 @@
           >
         </div>
         <div class="recommended__info__price__button">
-          <RoundedButton :background-color="'#2F80ED'">
+          <RoundedButton
+            :background-color="'#2F80ED'"
+            @click.native="addToCart"
+          >
             <span>Add to Cart</span>
             <svg-icon name="cart" />
           </RoundedButton>
@@ -110,11 +117,12 @@
 <script>
 import ButtonIcon from '@/components/ButtonIcon'
 import RoundedButton from '@/components/RoundedButton'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: 'Recommended',
   components: { RoundedButton, ButtonIcon },
   data: () => ({
-    games: [
+    recommendedGames: [
       {
         id: 1,
         title: 'europa',
@@ -197,8 +205,10 @@ export default {
       },
     },
   }),
-
   computed: {
+    ...mapState('cart', ['games']),
+    ...mapState('user', ['user']),
+
     price() {
       let price = this.currentGame.price
 
@@ -224,6 +234,9 @@ export default {
       }
     },
 
+    /**
+     * calculate total price
+     */
     totalPrice() {
       const discount = this.currentGame.discount / 100
       let totalPrice =
@@ -236,9 +249,13 @@ export default {
       return totalPrice.toFixed(0).replace(/\.0+$/, '')
     },
   },
-
+  created() {
+    this.GET_GAMES()
+  },
   mounted() {},
   methods: {
+    ...mapActions('cart', ['GET_GAMES', 'ADD_GAME']),
+
     /**
      * change slides
      */
@@ -356,6 +373,27 @@ export default {
           .doc(this.currentGame.documentId)
           .update({
             is_in_wishlist: isInWishList,
+          })
+      } catch (e) {
+        throw new Error(e)
+      }
+    },
+
+    addToCart() {
+      const exist = this.games.includes(this.currentGame.title)
+      if (!exist) {
+        this.ADD_GAME(this.currentGame.title)
+        this.setCartGamesToFirebase()
+      }
+    },
+
+    async setCartGamesToFirebase() {
+      try {
+        await this.$fire.firestore
+          .collection('users')
+          .doc(this.user.id)
+          .update({
+            cart: this.games,
           })
       } catch (e) {
         throw new Error(e)
@@ -524,7 +562,7 @@ export default {
 
         span:nth-child(3) {
           color: $success;
-          font-size: rem(20px);
+          font-size: rem(18px);
           grid-column: 1;
           grid-row: 2;
         }

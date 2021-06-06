@@ -31,12 +31,16 @@
 
     <!--PROFILE-->
     <div class="header__profile">
-      <div class="cart">
+      <!--CART-->
+      <div class="cart" @click="goToCart">
         <svg-icon name="cart" class="icon" />
-        <div class="cart__badge"><span>3</span></div>
+        <div v-if="games.length > 0" class="cart__badge">
+          <span>{{ games.length }}</span>
+        </div>
         <span>84.34 $</span>
       </div>
 
+      <!--LANGUAGE-->
       <div class="language" @click.stop="showLanguageMenu">
         <span>{{ currentLanguage.title }}</span>
         <svg-icon :name="currentLanguage.icon" class="icon-language" />
@@ -84,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Header',
@@ -113,12 +117,15 @@ export default {
       },
     ],
   }),
-
+  computed: {
+    ...mapState('cart', ['games']),
+  },
   mounted() {
     this.getLanguage()
     document.body.addEventListener('click', this.hideLanguageMenu)
     document.body.addEventListener('click', this.hideUserMenu)
   },
+
   beforeDestroy() {
     document.body.removeEventListener('click', this.hideLanguageMenu)
     document.body.removeEventListener('click', this.hideUserMenu)
@@ -181,6 +188,10 @@ export default {
       this.$i18n.locale = language.code
       this.SET_LANGUAGE(language.code)
       localStorage.setItem('locale', language.code)
+    },
+
+    goToCart() {
+      this.$router.push({ name: 'cart' })
     },
   },
 }
