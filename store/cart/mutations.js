@@ -1,9 +1,13 @@
 export default {
   SET_GAMES(state, games) {
-    state.games = games
+    state.games.push(games)
   },
 
   ADD_GAME(state, title) {
-    state.games.push(title)
+    state.gameTitles.push(title)
+  },
+
+  SET_GAMES_TITLES(state, titles) {
+    state.gameTitles = titles
   },
 }

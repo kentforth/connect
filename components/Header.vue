@@ -34,8 +34,8 @@
       <!--CART-->
       <div class="cart" @click="goToCart">
         <svg-icon name="cart" class="icon" />
-        <div v-if="games.length > 0" class="cart__badge">
-          <span>{{ games.length }}</span>
+        <div v-if="gameTitles.length > 0" class="cart__badge">
+          <span>{{ gameTitles.length }}</span>
         </div>
         <span>84.34 $</span>
       </div>
@@ -117,11 +117,15 @@ export default {
       },
     ],
   }),
+  async fetch() {
+    await this.GET_GAMES_TITLES()
+  },
   computed: {
-    ...mapState('cart', ['games']),
+    ...mapState('cart', ['gameTitles']),
   },
   mounted() {
     this.getLanguage()
+    this.GET_USER()
     document.body.addEventListener('click', this.hideLanguageMenu)
     document.body.addEventListener('click', this.hideUserMenu)
   },
@@ -132,6 +136,8 @@ export default {
   },
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
+    ...mapActions('user', ['GET_USER']),
+    ...mapActions('cart', ['GET_GAMES_TITLES']),
 
     /**
      * get current language
@@ -235,6 +241,10 @@ export default {
       align-items: center;
       position: relative;
       cursor: pointer;
+
+      .icon {
+        color: $gray-light;
+      }
 
       span {
         margin-left: rem(20px);

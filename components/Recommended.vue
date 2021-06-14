@@ -206,7 +206,7 @@ export default {
     },
   }),
   computed: {
-    ...mapState('cart', ['games']),
+    ...mapState('cart', ['gameTitles']),
     ...mapState('user', ['user']),
 
     price() {
@@ -249,12 +249,9 @@ export default {
       return totalPrice.toFixed(0).replace(/\.0+$/, '')
     },
   },
-  created() {
-    this.GET_GAMES()
-  },
   mounted() {},
   methods: {
-    ...mapActions('cart', ['GET_GAMES', 'ADD_GAME']),
+    ...mapActions('cart', ['ADD_GAME']),
 
     /**
      * change slides
@@ -380,7 +377,7 @@ export default {
     },
 
     addToCart() {
-      const exist = this.games.includes(this.currentGame.title)
+      const exist = this.gameTitles.includes(this.currentGame.title)
       if (!exist) {
         this.ADD_GAME(this.currentGame.title)
         this.setCartGamesToFirebase()
@@ -393,7 +390,7 @@ export default {
           .collection('users')
           .doc(this.user.id)
           .update({
-            cart: this.games,
+            cart: this.gameTitles,
           })
       } catch (e) {
         throw new Error(e)
