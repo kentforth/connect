@@ -209,6 +209,9 @@ export default {
     ...mapState('cart', ['gameTitles']),
     ...mapState('user', ['user']),
 
+    /**
+     * calculate price
+     */
     price() {
       let price = this.currentGame.price
 
@@ -220,6 +223,9 @@ export default {
       return price.toFixed(0).replace(/\.0+$/, '')
     },
 
+    /**
+     * claculate currency
+     */
     currency() {
       const locale = this.$i18n.locale
       switch (locale) {
@@ -308,6 +314,9 @@ export default {
       }
     },
 
+    /**
+     * assign values from firbase
+     */
     assignValuesFromFirebase(slideId, document) {
       this.currentGame.documentId = document.id
       this.previewImages[0].imageUrl = document.data().imageURL_1
@@ -376,6 +385,9 @@ export default {
       }
     },
 
+    /**
+     * add to cart
+     */
     addToCart() {
       const exist = this.gameTitles.includes(this.currentGame.title)
       if (!exist) {
@@ -384,6 +396,10 @@ export default {
       }
     },
 
+    /**
+     * set cart games to firebase
+     * @returns {Promise<void>}
+     */
     async setCartGamesToFirebase() {
       try {
         await this.$fire.firestore

@@ -6,6 +6,7 @@ export default {
    * @constructor
    */
   async GET_GAMES({ commit }) {
+    const games = []
     try {
       await this.$fire.firestore
         .collection('users')
@@ -13,7 +14,7 @@ export default {
         .get()
         .then((snapshot) => {
           const { cart } = snapshot.data()
-          const games = []
+
           cart.forEach((el) => {
             this.$fire.firestore
               .collection('games')
@@ -46,7 +47,6 @@ export default {
       .get()
       .then((snapshot) => {
         const { cart } = snapshot.data()
-        console.log(cart)
         commit('SET_GAMES_TITLES', cart)
       })
   },

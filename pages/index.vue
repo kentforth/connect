@@ -130,6 +130,7 @@ import Recommended from '@/components/Recommended'
 import Card from '../components/Card'
 
 export default {
+  name: 'Index',
   components: { Recommended, Dropdown, Card },
   data: () => ({
     isYourStore: false,
