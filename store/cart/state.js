@@ -1,5 +1,5 @@
 export default () => ({
   games: [],
   gameTitles: [],
-  gameTotalPrice: 0,
+  cartTotalPrice: 0,
 })

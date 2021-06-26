@@ -40,14 +40,30 @@ export default {
     commit('ADD_GAME', title)
   },
 
+  /**
+   * get games titles
+   * @param commit
+   * @returns {Promise<void>}
+   * @constructor
+   */
   async GET_GAMES_TITLES({ commit }) {
     await this.$fire.firestore
       .collection('users')
-      .doc(process.env.VUE_APP_USER_ID)
+      .doc(process.env.userId)
       .get()
       .then((snapshot) => {
         const { cart } = snapshot.data()
         commit('SET_GAMES_TITLES', cart)
       })
+  },
+
+  /**
+   * remove game from cart
+   * @param commit
+   * @param title
+   * @constructor
+   */
+  REMOVE_GAME({ commit }, title) {
+    commit('REMOVE_GAME', title)
   },
 }

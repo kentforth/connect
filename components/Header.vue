@@ -37,7 +37,7 @@
         <div v-if="gameTitles.length > 0" class="cart__badge">
           <span>{{ gameTitles.length }}</span>
         </div>
-        <span>84.34 $</span>
+        <span>{{ totalPrice }} {{ currency }}</span>
       </div>
 
       <!--LANGUAGE-->
@@ -121,7 +121,38 @@ export default {
     await this.GET_GAMES_TITLES()
   },
   computed: {
-    ...mapState('cart', ['gameTitles']),
+    ...mapState('cart', ['gameTitles', 'cartTotalPrice']),
+
+    /**
+     * total price
+     */
+    totalPrice() {
+      let price = this.cartTotalPrice
+
+      if (this.$i18n.locale === 'ru') {
+        price = price * 72.86
+      } else if (this.$i18n.locale === 'de') {
+        price = price * 0.82
+      }
+      return price.toFixed(1).replace(/\.0+$/, '')
+    },
+
+    /**
+     * show currency
+     */
+    currency() {
+      const locale = this.$i18n.locale
+      switch (locale) {
+        case 'ru':
+          return '₽'
+        case 'de':
+          return '€'
+        case 'en':
+          return '$'
+        default:
+          return '$'
+      }
+    },
   },
   mounted() {
     this.getLanguage()

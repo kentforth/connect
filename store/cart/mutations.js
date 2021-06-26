@@ -1,6 +1,11 @@
 export default {
   SET_GAMES(state, games) {
     state.games = games
+    const prices = []
+    state.games.forEach((el) => {
+      prices.push(el.totalPrice)
+    })
+    state.cartTotalPrice = prices.reduce((a, b) => a + b)
   },
 
   ADD_GAME(state, title) {
@@ -11,7 +16,23 @@ export default {
     state.gameTitles = titles
   },
 
-  SET_GAME_TOTAL_PRICE(state, price) {
-    state.gameTotalPrice = state.gameTotalPrice + price
+  async REMOVE_GAME(state, { title, id }) {
+    const titleIndex = state.gameTitles.indexOf(title)
+    const gameIndex = state.gameTitles.indexOf(title)
+
+    const prices = []
+
+    if (titleIndex !== -1) {
+      state.gameTitles.splice(titleIndex, 1)
+      state.games.splice(gameIndex, 1)
+
+      state.games.forEach((el) => {
+        prices.push(el.totalPrice)
+      })
+      state.cartTotalPrice = prices.reduce((a, b) => a + b)
+    }
+    await this.$fire.firestore.collection('users').doc(id).update({
+      cart: state.gameTitles,
+    })
   },
 }

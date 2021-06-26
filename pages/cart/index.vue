@@ -9,7 +9,7 @@
     </div>
 
     <div class="total">
-      Total: <span> {{ gameTotalPrice }} {{ currency }}</span>
+      Total: <span> {{ totalPrice }} {{ currency }}</span>
     </div>
   </div>
 </template>
@@ -29,16 +29,16 @@ export default {
   }),
   computed: {
     ...mapState('user', ['user']),
-    ...mapState('cart', ['games', 'gameTotalPrice']),
+    ...mapState('cart', ['cartTotalPrice', 'games']),
 
     /**
-     * claculate currency
+     * calculate currency
      */
     currency() {
       const locale = this.$i18n.locale
       switch (locale) {
         case 'ru':
-          return 'руб.'
+          return '₽'
         case 'de':
           return '€'
         case 'en':
@@ -46,6 +46,17 @@ export default {
         default:
           return '$'
       }
+    },
+
+    totalPrice() {
+      let price = this.cartTotalPrice
+
+      if (this.$i18n.locale === 'ru') {
+        price = price * 72.86
+      } else if (this.$i18n.locale === 'de') {
+        price = price * 0.82
+      }
+      return price.toFixed(1).replace(/\.0+$/, '')
     },
   },
   mounted() {},

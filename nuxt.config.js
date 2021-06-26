@@ -66,17 +66,21 @@ export default {
 
   firebase: {
     config: {
-      apiKey: 'AIzaSyAMVQ_Y3dNO4zb0-ddTFRYPWxfILMhD9iA',
-      authDomain: 'connect-651e9.firebaseapp.com',
-      projectId: 'connect-651e9',
-      storageBucket: 'connect-651e9.appspot.com',
-      messagingSenderId: '192049796776',
-      appId: '1:192049796776:web:06c9bdf7cebd87e029149d',
+      apiKey: process.env.VUE_APP_API_KEY,
+      authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+      projectId: process.env.VUE_APP_PROJECT_ID,
+      storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+      messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+      appId: process.env.VUE_APP_APP_ID,
     },
     services: {
       storage: true,
       firestore: true,
     },
+  },
+
+  env: {
+    userId: process.env.VUE_APP_USER_ID,
   },
 
   svgSprite: {

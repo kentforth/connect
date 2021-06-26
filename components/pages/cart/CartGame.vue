@@ -9,7 +9,7 @@
     <div class="game__content">
       <div class="game__content-title">
         <h2>{{ game.title }}</h2>
-        <button class="btn-transparent">
+        <button class="btn-transparent" @click="removeGame(game.title)">
           <img src="@/assets/svg/trash.svg" alt="" />
         </button>
       </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'CartGame',
@@ -56,6 +56,7 @@ export default {
       default: () => {},
     },
   },
+
   computed: {
     /**
      * calculate price
@@ -68,17 +69,17 @@ export default {
       } else if (this.$i18n.locale === 'de') {
         price = price * 0.82
       }
-      return price.toFixed(0).replace(/\.0+$/, '')
+      return price.toFixed(1).replace(/\.0+$/, '')
     },
 
     /**
-     * claculate currency
+     * show currency
      */
     currency() {
       const locale = this.$i18n.locale
       switch (locale) {
         case 'ru':
-          return 'руб.'
+          return '₽'
         case 'de':
           return '€'
         case 'en':
@@ -92,23 +93,30 @@ export default {
      * calculate total price
      */
     totalPrice() {
-      const discount = this.game.discount / 100
-      let totalPrice = this.game.price - this.game.price * discount
+      let totalPrice = this.game.totalPrice
       if (this.$i18n.locale === 'ru') {
-        totalPrice = totalPrice * 72.86
+        totalPrice = this.game.totalPrice * 72.86
       } else if (this.$i18n.locale === 'de') {
-        totalPrice = totalPrice * 0.82
+        totalPrice = this.game.totalPrice * 0.82
       }
-      totalPrice = totalPrice.toFixed(0).replace(/\.0+$/, '')
+      totalPrice = totalPrice.toFixed(1).replace(/\.0+$/, '')
       return totalPrice
     },
   },
-  mounted() {
-    this.SET_GAME_TOTAL_PRICE(+this.totalPrice)
-  },
 
   methods: {
-    ...mapMutations('cart', ['SET_GAME_TOTAL_PRICE']),
+    ...mapActions('cart', ['REMOVE_GAME']),
+
+    /**
+     * remove game
+     * @param title
+     */
+    removeGame(title) {
+      this.REMOVE_GAME({
+        title,
+        id: process.env.userId,
+      })
+    },
   },
 }
 </script>
