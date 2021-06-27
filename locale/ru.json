@@ -3,5 +3,7 @@
   "navigationLinkLibrary" : "библиотека",
   "navigationLinkCommunity" : "сообщество",
   "navigationLinkSupport" : "поддержка",
-  "profile" : "Профиль"
+  "profile" : "Профиль",
+  "shoppingCart": "Корзина",
+  "cartTotal" : "Всего"
 }

@@ -1,15 +1,26 @@
 <template>
   <div>
     <div class="title">
-      <h1>YOUR SHOPPING CART</h1>
+      <h1>{{ $t('shoppingCart') }}</h1>
     </div>
 
     <div class="container">
-      <CartGame v-for="game in games" ref="game" :key="game.id" :game="game" />
+      <client-only>
+        <slide-x-right-transition :group="true">
+          <CartGame
+            v-for="game in games"
+            ref="game"
+            :key="game.id"
+            :game="game"
+          />
+        </slide-x-right-transition>
+      </client-only>
     </div>
 
-    <div class="total">
-      Total: <span> {{ totalPrice }} {{ currency }}</span>
+    <span v-if="!games.length" class="no-games">No Items Here</span>
+
+    <div v-if="games.length" class="total">
+      {{ $t('cartTotal') }}: <span> {{ totalPrice }} {{ currency }}</span>
     </div>
   </div>
 </template>
@@ -21,9 +32,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Index',
   components: { CartGame },
-  async asyncData({ store }) {
-    await store.dispatch('cart/GET_GAMES')
-  },
+
   data: () => ({
     price: 0,
   }),
@@ -73,6 +82,10 @@ export default {
   text-align: center;
   padding: rem(30px) 0;
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+
+  h1 {
+    text-transform: uppercase;
+  }
 }
 .container {
   width: 70%;
@@ -94,5 +107,13 @@ export default {
     color: $success;
     font-size: rem(35px);
   }
+}
+
+.no-games {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: rem(25px);
+  color: $text-gray;
 }
 </style>

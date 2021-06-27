@@ -1,6 +1,6 @@
 export default {
   SET_GAMES(state, games) {
-    state.games = games
+    state.games = games.slice()
     const prices = []
     state.games.forEach((el) => {
       prices.push(el.totalPrice)
@@ -8,7 +8,11 @@ export default {
     state.cartTotalPrice = prices.reduce((a, b) => a + b)
   },
 
-  ADD_GAME(state, title) {
+  ADD_GAME_TO_CART(state, title) {
+    state.gameTitles.push(title)
+  },
+
+  ADD_GAME_TO_LIBRARY(state, title) {
     state.gameTitles.push(title)
   },
 
@@ -26,10 +30,12 @@ export default {
       state.gameTitles.splice(titleIndex, 1)
       state.games.splice(gameIndex, 1)
 
-      state.games.forEach((el) => {
-        prices.push(el.totalPrice)
-      })
-      state.cartTotalPrice = prices.reduce((a, b) => a + b)
+      if (state.games.length) {
+        state.games.forEach((el) => {
+          prices.push(el.totalPrice)
+        })
+        state.cartTotalPrice = prices.reduce((a, b) => a + b)
+      }
     }
     await this.$fire.firestore.collection('users').doc(id).update({
       cart: state.gameTitles,

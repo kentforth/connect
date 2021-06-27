@@ -257,7 +257,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions('cart', ['ADD_GAME']),
+    ...mapActions('cart', ['ADD_GAME_TO_CART']),
 
     /**
      * change slides
@@ -391,7 +391,7 @@ export default {
     addToCart() {
       const exist = this.gameTitles.includes(this.currentGame.title)
       if (!exist) {
-        this.ADD_GAME(this.currentGame.title)
+        this.ADD_GAME_TO_CART(this.currentGame.title)
         this.setCartGamesToFirebase()
       }
     },

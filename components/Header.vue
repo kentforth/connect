@@ -37,7 +37,7 @@
         <div v-if="gameTitles.length > 0" class="cart__badge">
           <span>{{ gameTitles.length }}</span>
         </div>
-        <span>{{ totalPrice }} {{ currency }}</span>
+        <span v-if="gameTitles.length">{{ totalPrice }} {{ currency }}</span>
       </div>
 
       <!--LANGUAGE-->
@@ -92,6 +92,7 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Header',
+
   data: () => ({
     isUserMenu: false,
     isLanguageMenu: false,
@@ -117,9 +118,7 @@ export default {
       },
     ],
   }),
-  async fetch() {
-    await this.GET_GAMES_TITLES()
-  },
+
   computed: {
     ...mapState('cart', ['gameTitles', 'cartTotalPrice']),
 
@@ -134,6 +133,7 @@ export default {
       } else if (this.$i18n.locale === 'de') {
         price = price * 0.82
       }
+
       return price.toFixed(1).replace(/\.0+$/, '')
     },
 
@@ -157,6 +157,8 @@ export default {
   mounted() {
     this.getLanguage()
     this.GET_USER()
+    this.GET_GAMES_TITLES()
+    this.GET_GAMES()
     document.body.addEventListener('click', this.hideLanguageMenu)
     document.body.addEventListener('click', this.hideUserMenu)
   },
@@ -168,13 +170,14 @@ export default {
   methods: {
     ...mapActions('global', ['SET_LANGUAGE']),
     ...mapActions('user', ['GET_USER']),
-    ...mapActions('cart', ['GET_GAMES_TITLES']),
+    ...mapActions('cart', ['GET_GAMES_TITLES', 'GET_GAMES']),
 
     /**
      * get current language
      */
     getLanguage() {
       const locale = localStorage.getItem('locale')
+      this.$i18n.locale = locale
 
       switch (locale) {
         case 'en':

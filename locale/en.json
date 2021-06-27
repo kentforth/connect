@@ -1,8 +1,9 @@
 {
-  "navigationLinkStore" : "store",
-  "navigationLinkLibrary" : "library",
-  "navigationLinkCommunity" : "community",
-  "navigationLinkSupport" : "support",
-  "profile" : "Profile"
-
+  "navigationLinkStore": "store",
+  "navigationLinkLibrary": "library",
+  "navigationLinkCommunity": "community",
+  "navigationLinkSupport": "support",
+  "profile": "Profile",
+  "shoppingCart": "Your Shopping Cart",
+  "cartTotal" : "Total"
 }

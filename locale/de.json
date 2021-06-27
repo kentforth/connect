@@ -3,5 +3,7 @@
   "navigationLinkLibrary" : "Bibliothék",
   "navigationLinkCommunity" : "Geméinschaft",
   "navigationLinkSupport" : "Technischer Support",
-  "profile" : "Profíl"
+  "profile" : "Profíl",
+  "shoppingCart": "Warenkorb ",
+  "cartTotal" : "Gesamt"
 }

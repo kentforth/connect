@@ -23,6 +23,14 @@ export default {
       src: '@/plugins/swiper.js',
       ssr: false,
     },
+    {
+      src: '@/plugins/vue2-transitions.js',
+      ssr: false,
+    },
+    {
+      src: '@/plugins/sweet-alert.js',
+      ssr: false,
+    },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

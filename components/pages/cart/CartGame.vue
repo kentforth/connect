@@ -37,9 +37,12 @@
       <div class="game__content-price">
         <span v-if="game.discount > 0">{{ price }} {{ currency }}</span>
         <span v-if="game.discount > 0">{{ game.discount }}%</span>
-        <span :class="{ 'span-price': game.discount < 1 }"
-          >{{ totalPrice }} {{ currency }}</span
-        >
+        <div>
+          <button class="btn-buy" @click="buyGame">Buy</button>
+          <span :class="{ 'span-price': game.discount < 1 }"
+            >{{ totalPrice }} {{ currency }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -117,6 +120,22 @@ export default {
         id: process.env.userId,
       })
     },
+
+    buyGame() {
+      this.$swal({
+        title: 'Thanks for purchase!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+        onClose: this.replaceGameToLibrary(),
+      })
+    },
+
+    replaceGameToLibrary() {
+      setTimeout(() => {
+        console.log('replace game')
+      }, 1500)
+    },
   },
 }
 </script>
@@ -161,15 +180,33 @@ export default {
       text-decoration: line-through;
     }
 
-    span:nth-child(3) {
-      font-size: rem(30px);
-      color: $success;
-    }
-
     .span-price {
       text-decoration: none !important;
       font-size: rem(30px);
       color: $success;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-left: rem(20px);
+        font-size: rem(30px);
+        color: $success;
+      }
+
+      .btn-buy {
+        font-size: rem(25px);
+        cursor: pointer;
+        background-color: $blue;
+        border: none;
+        border-radius: 20px;
+        padding: 4px 0;
+        color: $white;
+        font-weight: 600;
+        width: 100px;
+      }
     }
   }
 

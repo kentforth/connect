@@ -10,11 +10,10 @@ export default {
     try {
       await this.$fire.firestore
         .collection('users')
-        .doc(process.env.VUE_APP_USER_ID)
+        .doc(process.env.userId)
         .get()
         .then((snapshot) => {
           const { cart } = snapshot.data()
-
           cart.forEach((el) => {
             this.$fire.firestore
               .collection('games')
@@ -36,7 +35,7 @@ export default {
    * @param title
    * @constructor
    */
-  ADD_GAME({ commit }, title) {
+  ADD_GAME_TO_CART({ commit }, title) {
     commit('ADD_GAME', title)
   },
 
