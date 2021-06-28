@@ -36,7 +36,7 @@ export default {
    * @constructor
    */
   ADD_GAME_TO_CART({ commit }, title) {
-    commit('ADD_GAME', title)
+    commit('ADD_GAME_TO_CART', title)
   },
 
   /**

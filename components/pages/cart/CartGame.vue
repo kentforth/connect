@@ -38,7 +38,7 @@
         <span v-if="game.discount > 0">{{ price }} {{ currency }}</span>
         <span v-if="game.discount > 0">{{ game.discount }}%</span>
         <div>
-          <button class="btn-buy" @click="buyGame">Buy</button>
+          <button class="btn-buy" @click="buyGame(game.title)">Buy</button>
           <span :class="{ 'span-price': game.discount < 1 }"
             >{{ totalPrice }} {{ currency }}</span
           >
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'CartGame',
@@ -109,31 +109,31 @@ export default {
 
   methods: {
     ...mapActions('cart', ['REMOVE_GAME']),
+    ...mapMutations('cart', ['ADD_GAME_TO_LIBRARY']),
 
     /**
      * remove game
      * @param title
      */
     removeGame(title) {
-      this.REMOVE_GAME({
-        title,
-        id: process.env.userId,
-      })
+      this.REMOVE_GAME(title)
     },
 
-    buyGame() {
+    buyGame(title) {
       this.$swal({
         title: 'Thanks for purchase!',
         icon: 'success',
         showConfirmButton: false,
         timer: 1500,
-        onClose: this.replaceGameToLibrary(),
+        willClose: this.moveGameToLibrary(title),
       })
     },
 
-    replaceGameToLibrary() {
+    moveGameToLibrary(title) {
       setTimeout(() => {
-        console.log('replace game')
+        this.REMOVE_GAME(title)
+        this.ADD_GAME_TO_LIBRARY(title)
+        this.$router.push({ name: 'library' })
       }, 1500)
     },
   },

@@ -36,6 +36,7 @@ export default {
   data: () => ({
     price: 0,
   }),
+
   computed: {
     ...mapState('user', ['user']),
     ...mapState('cart', ['cartTotalPrice', 'games']),
@@ -68,9 +69,12 @@ export default {
       return price.toFixed(1).replace(/\.0+$/, '')
     },
   },
-  mounted() {},
+  mounted() {
+    this.GET_GAMES_TITLES()
+    this.GET_GAMES()
+  },
   methods: {
-    ...mapActions('cart', ['GET_GAMES']),
+    ...mapActions('cart', ['GET_GAMES', 'GET_GAMES_TITLES']),
   },
 }
 </script>

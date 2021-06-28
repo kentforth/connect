@@ -12,15 +12,39 @@ export default {
     state.gameTitles.push(title)
   },
 
-  ADD_GAME_TO_LIBRARY(state, title) {
-    state.gameTitles.push(title)
+  /**
+   * add game to library
+   * @param state
+   * @param title
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  async ADD_GAME_TO_LIBRARY(state, title) {
+    const listHasTitles = state.libraryGames.includes(title)
+    if (!listHasTitles) {
+      state.libraryGames.push(title)
+      await this.$fire.firestore
+        .collection('users')
+        .doc(process.env.userId)
+        .update({
+          library: state.libraryGames,
+        })
+    }
   },
 
   SET_GAMES_TITLES(state, titles) {
     state.gameTitles = titles
   },
 
-  async REMOVE_GAME(state, { title, id }) {
+  /**
+   * remove game from cart
+   * @param state
+   * @param title
+   * @param id
+   * @returns {Promise<void>}
+   * @constructor
+   */
+  async REMOVE_GAME(state, title) {
     const titleIndex = state.gameTitles.indexOf(title)
     const gameIndex = state.gameTitles.indexOf(title)
 
@@ -37,8 +61,11 @@ export default {
         state.cartTotalPrice = prices.reduce((a, b) => a + b)
       }
     }
-    await this.$fire.firestore.collection('users').doc(id).update({
-      cart: state.gameTitles,
-    })
+    await this.$fire.firestore
+      .collection('users')
+      .doc(process.env.userId)
+      .update({
+        cart: state.gameTitles,
+      })
   },
 }
