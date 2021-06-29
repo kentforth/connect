@@ -422,14 +422,25 @@ export default {
   margin-top: rem(40px);
   display: grid;
   grid-template-columns: 800px 1fr;
+  width: 100%;
   grid-gap: rem(30px);
   overflow: hidden;
   border-radius: $radius;
 
   &__slider {
-    height: 500px;
+    height: 600px;
     width: 100%;
     position: relative;
+
+    @include responsive(tab-port) {
+      height: 400px;
+    }
+
+    .swiper-wrapper {
+      @include responsive(desktop) {
+        height: 600px;
+      }
+    }
 
     img {
       width: 100%;
@@ -440,7 +451,7 @@ export default {
 
     &__buttons {
       position: absolute;
-      bottom: rem(40px);
+      bottom: rem(184px);
       right: 0;
       z-index: 999;
       background: $dark-gradient;
@@ -499,7 +510,7 @@ export default {
       display: grid;
       grid-gap: rem(20px);
       margin-top: rem(30px);
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       div {
         border-radius: $radius;
         width: 100%;
@@ -518,6 +529,7 @@ export default {
     &__available {
       &__platforms {
         color: $white;
+
         &__images {
           max-width: rem(100px);
           display: grid;
@@ -533,7 +545,7 @@ export default {
       &__tags {
         margin-top: rem(20px);
         display: flex;
-        padding-bottom: rem(20px);
+        flex-wrap: wrap;
         border-bottom: 1px solid $line-thin;
 
         a {
@@ -543,6 +555,7 @@ export default {
           padding: 3px 10px;
           background-color: $gray-mid;
           border-radius: 10px;
+          margin-bottom: rem(10px);
         }
       }
     }
@@ -598,6 +611,15 @@ export default {
         justify-content: center;
       }
     }
+  }
+
+  @include responsive(desktop) {
+    grid-template-columns: 500px 1fr;
+  }
+
+  @include responsive(tab-port) {
+    grid-template-columns: 1fr;
+    width: 500px;
   }
 }
 </style>

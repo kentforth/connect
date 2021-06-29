@@ -335,6 +335,11 @@ export default {
         box-shadow: 1px 3px 17px 1px rgba(11, 18, 28, 0.75);
         z-index: 999;
 
+        @include responsive(tab-port) {
+          top: 215px;
+          right: 325px;
+        }
+
         &__item {
           display: flex;
           justify-content: space-between;
@@ -400,6 +405,11 @@ export default {
         z-index: 999;
         box-shadow: 1px 3px 17px 1px rgba(11, 18, 28, 0.75);
 
+        @include responsive(tab-port) {
+          top: 213px;
+          right: 178px;
+        }
+
         &__item {
           display: flex;
           justify-content: space-between;
@@ -418,6 +428,15 @@ export default {
         }
       }
     }
+
+    @include responsive(tab-port) {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  @include responsive(tab-port) {
+    grid-template-columns: 1fr;
   }
 }
 

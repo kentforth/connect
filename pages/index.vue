@@ -7,7 +7,7 @@
 
     <div class="content">
       <!--SIDEBAR-->
-      <div class="sidebar">
+      <div class="content__sidebar">
         <Card>
           <h2>Browse Category</h2>
           <div class="line"></div>
@@ -39,7 +39,7 @@
           </div>
         </Card>
       </div>
-      <div class="main">
+      <div class="content__slides">
         <div class="content__topbar">
           <!--STORE-->
           <div class="topbar-item" @click.stop="showStoreMenu">
@@ -501,10 +501,19 @@ export default {
   grid-template-columns: 250px 1fr;
   grid-gap: rem(45px);
 
-  .sidebar {
+  &__sidebar {
     max-width: 300px;
     display: grid;
     grid-gap: rem(40px);
+
+    @include responsive(tab-port) {
+      grid-row: 2;
+    }
+  }
+  &__slides {
+    @include responsive(tab-port) {
+      grid-row: 1;
+    }
   }
 
   &__topbar {
@@ -584,6 +593,10 @@ export default {
         width: rem(20px);
       }
     }
+  }
+
+  @include responsive(tab-port) {
+    grid-template-columns: 1fr;
   }
 }
 </style>

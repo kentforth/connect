@@ -116,7 +116,8 @@ export default {
      * @param title
      */
     removeGame(title) {
-      this.REMOVE_GAME(title)
+      console.log('title')
+      // this.REMOVE_GAME(title)
     },
 
     buyGame(title) {
