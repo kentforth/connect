@@ -406,7 +406,7 @@ export default {
         box-shadow: 1px 3px 17px 1px rgba(11, 18, 28, 0.75);
 
         @include responsive(tab-port) {
-          top: 213px;
+          top: 215px;
           right: 178px;
         }
 
